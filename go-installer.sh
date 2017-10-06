@@ -59,7 +59,9 @@ fi
 echo "[*] Lösche $VERSION"
 rm $VERSION
 echo "[*] Erstelle Benutzer-Verzeichnis für Go-Projekte"
-mkdir -p $GOWORKSPACE"{bin,src,pkg}"
+mkdir -p $GOWORKSPACE"bin"
+mkdir -p $GOWORKSPACE"src"
+mkdir -p $GOWORKSPACE"pkg"
 echo "[*] Setze globale Variablen in /etc/profile"
 sed -i '/\/go\/bin/d' /etc/profile
 echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin" >> /etc/profile
