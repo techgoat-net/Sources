@@ -64,7 +64,7 @@ mkdir -p $GOWORKSPACE"src"
 mkdir -p $GOWORKSPACE"pkg"
 echo "[*] Setze globale Variablen in /etc/profile"
 sed -i '/\/go\/bin/d' /etc/profile
-echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin" >> /etc/profile
+echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /etc/profile
 sed -i '/export\ GOPATH/d' /etc/profile
 echo -e "export GOPATH=$GOWORKSPACE" >> /etc/profile
 sed -i '/export\ GOBIN/d' /etc/profile
