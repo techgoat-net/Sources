@@ -1,6 +1,7 @@
 #!/bin/bash
 INSTALLPATH="/usr/local"
 GOWORKSPACE="/home/rasputin/go_projects/"
+USER="rasputin"
 GETGOVERSION=$(go version 2>/dev/null)
 echo ""
 if [ "$(which curl)" != "" ]
@@ -71,6 +72,7 @@ if [ ! -d $GOWORKSPACE"pkg" ]
 then
     mkdir -p $GOWORKSPACE"pkg"
 fi 
+chown -R $USER $GOWORKSPACE
 echo "[*] Setze globale Variablen in /etc/profile"
 sed -i '/\/go\/bin/d' /etc/profile
 echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /etc/profile
