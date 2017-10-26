@@ -12,7 +12,7 @@ else
         exit 1
 fi
 echo -e "Go Installationspfad:\t\t$INSTALLPATH/go"
-VERSION=$(echo $WEB | awk -F'/' '{print $5}')
+VERSION=$(echo $WEB | awk -F'/' '{print $NF}')
 WEBSTRING="Go-Version zum Download:\t"$VERSION
 if [ "$GETGOVERSION" != "" ]
 then
