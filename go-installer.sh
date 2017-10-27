@@ -33,8 +33,9 @@ then
         echo "[!] Falsche Eingabe!"
         exit 1
 fi
-echo "[*] Beginne Download von: "$WEB 
-curl -s -q -O $(echo $WEB)
+echo "[*] Beginne Download von: "$VERSION
+ADRESSE=$(curl -qs -I $(echo $WEB) | grep -i location | awk '{print $NF}' | awk -F'?' '{print $1}')
+wget $ADRESSE
 if [ ! -e "$VERSION" ]
 then
         echo "[!] Download fehlgeschlagen, Datei im Ordner nicht gefunden!"
