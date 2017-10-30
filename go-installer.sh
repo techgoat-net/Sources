@@ -60,7 +60,7 @@ else
 fi
 echo "[*] Lösche $VERSION"
 rm $VERSION
-echo "[*] Erstelle Benutzer-Verzeichnis für Go-Projekte"
+echo "[*] Erstelle Benutzer-Verzeichnis für Go-Projekte falls nicht vorhanden"
 if [ ! -d  $GOWORKSPACE"bin" ]
 then 
     mkdir -p $GOWORKSPACE"bin"
@@ -74,19 +74,43 @@ then
     mkdir -p $GOWORKSPACE"pkg"
 fi 
 chown -R $USER $GOWORKSPACE
-echo "[*] Setze globale Variablen in /etc/profile"
-sed -i '/\/go\/bin/d' /etc/profile
-echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /etc/profile
-sed -i '/export\ GOPATH/d' /etc/profile
-echo -e "export GOPATH=$GOWORKSPACE" >> /etc/profile
-sed -i '/export\ GOBIN/d' /etc/profile
-echo -e "export GOBIN=\$GOPATH/bin" >> /etc/profile
-source /etc/profile
-echo "[*] Installiert: "$(go version)
+echo "[*] Setze globale Pfade"
+if [ -f "/etc/bash.bashrc" ]
+then
+	echo "[*] Setze Pfade in /etc/bash.bashrc"
+	sed -i '/\/go\/bin/d' /etc/bash.bashrc
+	echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /etc/bash.bashrc
+	sed -i '/export\ GOPATH/d' /etc/bash.bashrc
+	echo -e "export GOPATH=$GOWORKSPACE" >> /etc/bash.bashrc
+	sed -i '/export\ GOBIN/d' /etc/bash.bashrc
+	echo -e "export GOBIN=\$GOPATH/bin" >> /etc/bash.bashrc
+	source /etc/bash.bashrc
+else
+	echo "[*] Setze Pfade in /etc/profile"
+	sed -i '/\/go\/bin/d' /etc/profile
+	echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /etc/profile
+	sed -i '/export\ GOPATH/d' /etc/profile
+	echo -e "export GOPATH=$GOWORKSPACE" >> /etc/profile
+	sed -i '/export\ GOBIN/d' /etc/profile
+	echo -e "export GOBIN=\$GOPATH/bin" >> /etc/profile
+	source /etc/profile
+
+fi
+if [ -f "/home/$USER/.bashrc" ]
+then
+	echo "[*] Setze Pfade in lokaler .bashrc"
+	sed -i '/\/go\/bin/d' /home/$USER/.bashrc
+	echo -e "export PATH=\$PATH:$INSTALLPATH/go/bin:$GOPATH/bin" >> /home/$USER/.bashrc
+	sed -i '/export\ GOPATH/d' /home/$USER/.bashrc
+	echo -e "export GOPATH=$GOWORKSPACE" >> /home/$USER/.bashrc
+	sed -i '/export\ GOBIN/d' /home/$USER/.bashrc
+	echo -e "export GOBIN=\$GOPATH/bin" >> /home/$USER/.bashrc
+	su $USER -c "source /home/$USER/.bashrc"
+fi
 if [ $(echo $?) == 0 ]
 then
         echo "[*] Installation erfolgreich!"
-        echo -e "[*] Bitte führen Sie  noch den Befehl \"source /etc/profile\" aus damit Sie go verwenden können"
+        echo -e "[*] Bitte führen Sie  noch den Befehl \"source /home/$USER/.bashrc\" aus damit Sie go verwenden können"
         echo "[*] Oder loggen Sie sich aus und wieder ein"
 else
         echo "[!] Irgend etwas ist schiefgelaufen!"
