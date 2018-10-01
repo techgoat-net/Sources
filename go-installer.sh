@@ -9,9 +9,7 @@ then
     echo "[!] Dieses Script läuft nur mit Root-Rechten"
     exit 1
 fi
-
 ######[ Parameter ]######
-
 GETGOVERSION=$(go version 2>/dev/null)
 echo ""
 if [ "$(which curl)" != "" ]
