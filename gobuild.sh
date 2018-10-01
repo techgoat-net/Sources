@@ -1,5 +1,7 @@
 #! /bin/sh                                                 
-
+#
+# Baut eine Binary aus dem Source und verkleinert diese 
+#
 FILE=$1                                                    
 gofmt -w $1                                                
 go build -race -o ${FILE%%.*}_full "$1"                    
